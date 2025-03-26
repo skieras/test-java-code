@@ -1,5 +1,7 @@
 package pl.skieras.document_manager.model;
 
+import pl.skieras.document_manager.api.DocsController;
+
 import java.util.Map;
 
 public class Document {
@@ -33,5 +35,11 @@ public class Document {
 
     public void setMetadata(Map<String, Metadata> metadata) {
         this.metadata = metadata;
+    }
+
+    public Header readHeader() {
+        var x = new Metadata.MetadataReader("x", "y");
+        x.read();
+        return new Header();
     }
 }

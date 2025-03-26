@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.skieras.document_manager.api.rest.DocsControllerApi;
 import pl.skieras.document_manager.model.Document;
 import pl.skieras.document_manager.model.Header;
+import pl.skieras.document_manager.model.Metadata;
 import pl.skieras.document_manager.repo.DocumentRepository;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class DocsController implements DocsControllerApi {
     }
 
     public Document createDocument(@RequestBody Document document) {
-        return documentRepository.save(document);
+        return documentRepository.save(document, new Header());
     }
 
     public ResponseEntity<Document> updateDocument(@PathVariable Long id, @RequestBody Document documentDetails) {
@@ -37,19 +38,25 @@ public class DocsController implements DocsControllerApi {
             Document updatedDocument = document.get();
             updatedDocument.setName(documentDetails.getName());
             updatedDocument.setMetadata(documentDetails.getMetadata());
+            var x = new InternalClass();
             return ResponseEntity.ok(documentRepository.save(updatedDocument, new Header()));
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
-    public ResponseEntity<Void> deleteDocument(@PathVariable Long id) {
+    public Metadata deleteDocument(@PathVariable Long id) {
         Optional<Document> document = documentRepository.findById(id);
         if (document.isPresent()) {
             documentRepository.delete(document.get());
-            return ResponseEntity.noContent().build();
+            return new Metadata();
         } else {
-            return ResponseEntity.notFound().build();
+            return new Metadata();
         }
+    }
+
+    class InternalClass {
+        String a;
+        String b;
     }
 }

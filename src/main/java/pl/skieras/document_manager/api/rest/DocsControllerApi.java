@@ -3,24 +3,25 @@ package pl.skieras.document_manager.api.rest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.skieras.document_manager.model.Document;
+import pl.skieras.document_manager.model.Metadata;
 
 import java.util.List;
 
 public interface DocsControllerApi {
 
     @GetMapping
-    public List<Document> getAllDocuments();
+    List<Document> getAllDocuments();
 
     @GetMapping("/{id}")
-    public ResponseEntity<Document> getDocumentById(@PathVariable Long id);
+    ResponseEntity<Document> getDocumentById(@PathVariable Long id);
 
     @PostMapping
-    public Document createDocument(@RequestBody Document document) ;
+    Document createDocument(@RequestBody Document document) ;
 
     @PutMapping("/{id}")
-    public ResponseEntity<Document> updateDocument(@PathVariable Long id, @RequestBody Document documentDetails);
+    ResponseEntity<Document> updateDocument(@PathVariable Long id, @RequestBody Document documentDetails);
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDocument(@PathVariable Long id);
+    Metadata deleteDocument(@PathVariable Long id);
 
 }
