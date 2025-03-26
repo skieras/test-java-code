@@ -7,7 +7,7 @@ import pl.skieras.document_manager.api.rest.DocsControllerApi;
 import pl.skieras.document_manager.model.Document;
 import pl.skieras.document_manager.model.Header;
 import pl.skieras.document_manager.model.Metadata;
-import pl.skieras.document_manager.repo.DocumentRepository;
+import pl.skieras.document_manager.repo.RepositoryInterface;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class DocsController implements DocsControllerApi {
 
-    private final DocumentRepository documentRepository;
+    private final RepositoryInterface documentRepository;
 
     public List<Document> getAllDocuments() {
         return documentRepository.findAll();
@@ -38,7 +38,6 @@ public class DocsController implements DocsControllerApi {
             Document updatedDocument = document.get();
             updatedDocument.setName(documentDetails.getName());
             updatedDocument.setMetadata(documentDetails.getMetadata());
-            var x = new InternalClass();
             return ResponseEntity.ok(documentRepository.save(updatedDocument, new Header()));
         } else {
             return ResponseEntity.notFound().build();
@@ -53,10 +52,5 @@ public class DocsController implements DocsControllerApi {
         } else {
             return new Metadata();
         }
-    }
-
-    class InternalClass {
-        String a;
-        String b;
     }
 }
