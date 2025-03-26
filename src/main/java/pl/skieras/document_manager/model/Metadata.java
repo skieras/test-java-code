@@ -5,7 +5,7 @@ public class Metadata {
     private Long id;
     private String name;
 
-    static class MetadataReader {
+    class MetadataReader {
         String x;
         String y;
 

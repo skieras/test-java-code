@@ -38,7 +38,7 @@ public class Document {
     }
 
     public Header readHeader() {
-        var x = new Metadata.MetadataReader("x", "y");
+        var x = new Metadata().new MetadataReader("x", "y");
         x.read();
         return new Header();
     }
