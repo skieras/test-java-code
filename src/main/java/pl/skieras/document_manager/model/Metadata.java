@@ -19,3 +19,12 @@ public class Metadata {
         }
     }
 }
+
+class SuperData {
+    private String x;
+    private String y;
+
+    public String getX() {
+        return x + y;
+    }
+}
