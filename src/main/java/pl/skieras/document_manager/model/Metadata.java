@@ -1,13 +1,19 @@
 package pl.skieras.document_manager.model;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 public class Metadata {
 
     private Long id;
     private String name;
+    private Map<Long, String> data;
 
     class MetadataReader {
         String x;
         String y;
+        List<String> listData;
 
         public MetadataReader(String x, String y) {
             this.x = x;
@@ -23,8 +29,9 @@ public class Metadata {
 class SuperData {
     private String x;
     private String y;
+    private Optional<String> opt;
 
-    public String getX() {
-        return x + y;
+    public Optional<String> getX(String a, Optional<String> b) {
+        return Optional.of(b.orElse(x + y + a + b));
     }
 }
