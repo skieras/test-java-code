@@ -44,13 +44,14 @@ public class DocsController implements DocsControllerApi {
 
     public Document createDocument(@RequestBody Document document) {
         String filePath = document.getMetadata().get("filePath");
-        IHelper helper;
-        if (filePath.endsWith("pdf")) {
-            helper = new PdfHelper();
+        if (filePath.endsWith("pdf")) { //don't judge :D
+            PdfHelper helper = new PdfHelper();
+            helper.fromString(document.getContent(), filePath);
         } else {
-            helper = new DocxHelper();
+            DocxHelper helper = new DocxHelper();
+            helper.fromString(document.getContent(), filePath);
         }
-        helper.fromString(document.getContent(), filePath);
+
         return documentRepository.save(document, new Header());
     }
 
