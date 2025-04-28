@@ -12,6 +12,9 @@ public class Document {
     private String name;
     private Map<String, Metadata> metadata;
 
+    //document content in markdown format
+    private String content;
+
     // Getters and Setters
     public Long getId() {
         return id;
@@ -41,5 +44,13 @@ public class Document {
         var x = new Metadata().new MetadataReader("x", "y");
         x.read();
         return new Header();
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

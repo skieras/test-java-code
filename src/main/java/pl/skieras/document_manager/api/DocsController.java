@@ -4,6 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.skieras.document_manager.api.rest.DocsControllerApi;
+import pl.skieras.document_manager.helpers.DocxHelper;
+import pl.skieras.document_manager.helpers.IHelper;
+import pl.skieras.document_manager.helpers.PdfHelper;
 import pl.skieras.document_manager.model.Document;
 import pl.skieras.document_manager.model.Header;
 import pl.skieras.document_manager.model.Metadata;
@@ -24,11 +27,30 @@ public class DocsController implements DocsControllerApi {
     }
 
     public ResponseEntity<Document> getDocumentById(@PathVariable Long id) {
-        Optional<Document> document = documentRepository.findById(id);
-        return document.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return documentRepository.findById(id)
+                .map(document -> {
+                    String filePath = document.getMetadata().get("filePath");
+                    IHelper helper;
+                    if (filePath.endsWith("pdf")) {
+                        helper = new PdfHelper();
+                    } else {
+                        helper = new DocxHelper();
+                    }
+                    helper.docToString(filePath);
+                    return ResponseEntity.ok(document);
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     public Document createDocument(@RequestBody Document document) {
+        String filePath = document.getMetadata().get("filePath");
+        IHelper helper;
+        if (filePath.endsWith("pdf")) {
+            helper = new PdfHelper();
+        } else {
+            helper = new DocxHelper();
+        }
+        helper.fromString(document.getContent(), filePath);
         return documentRepository.save(document, new Header());
     }
 
