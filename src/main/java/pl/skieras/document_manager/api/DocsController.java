@@ -22,10 +22,12 @@ public class DocsController implements DocsControllerApi {
 
     private final RepositoryInterface documentRepository;
 
+    @GetMapping
     public List<Document> getAllDocuments() {
         return documentRepository.findAll();
     }
 
+    @GetMapping("/{id}")
     public ResponseEntity<Document> getDocumentById(@PathVariable Long id) {
         return documentRepository.findById(id)
                 .map(document -> {
@@ -42,6 +44,7 @@ public class DocsController implements DocsControllerApi {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @PostMapping
     public Document createDocument(@RequestBody Document document) {
         String filePath = document.getMetadata().get("filePath");
         if (filePath.endsWith("pdf")) { //don't judge :D
@@ -55,6 +58,7 @@ public class DocsController implements DocsControllerApi {
         return documentRepository.save(document, new Header());
     }
 
+    @PutMapping("/{id}")
     public ResponseEntity<Document> updateDocument(@PathVariable Long id, @RequestBody Document documentDetails) {
         Optional<Document> document = documentRepository.findById(id);
         if (document.isPresent()) {
@@ -67,6 +71,7 @@ public class DocsController implements DocsControllerApi {
         }
     }
 
+    @DeleteMapping("/{id}")
     public Metadata deleteDocument(@PathVariable Long id) {
         Optional<Document> document = documentRepository.findById(id);
         if (document.isPresent()) {
